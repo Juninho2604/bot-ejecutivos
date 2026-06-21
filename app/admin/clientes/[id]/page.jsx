@@ -9,6 +9,10 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { RecordatorioAcciones } from '@/components/admin/recordatorio-acciones';
+import { extenderSuscripcion } from '@/app/admin/actions';
 import { fmtFecha, fmtSoloFecha } from '@/lib/format';
 
 export const dynamic = 'force-dynamic';
@@ -85,6 +89,35 @@ export default async function ClienteDetallePage({ params }) {
 
       <Card>
         <CardHeader>
+          <CardTitle>Suscripción</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <form action={extenderSuscripcion} className="flex flex-wrap items-end gap-3">
+            <input type="hidden" name="id" value={cliente.id} />
+            <div className="space-y-1">
+              <label className="text-xs text-muted-foreground" htmlFor="dias">
+                Días a extender (negativo para restar)
+              </label>
+              <Input
+                id="dias"
+                name="dias"
+                type="number"
+                defaultValue={30}
+                className="w-40"
+              />
+            </div>
+            <Button type="submit" variant="outline">
+              Aplicar
+            </Button>
+            <span className="text-sm text-muted-foreground">
+              Vence actual: {fmtSoloFecha(cliente.suscripcion_vence)}
+            </span>
+          </form>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
           <CardTitle>Recordatorios ({recordatorios.length})</CardTitle>
         </CardHeader>
         <CardContent className="space-y-2">
@@ -103,9 +136,12 @@ export default async function ClienteDetallePage({ params }) {
                   {r.recurrencia ? ` · 🔁 ${r.recurrencia}` : ''}
                 </p>
               </div>
-              <Badge variant={ESTADO_VARIANT[r.estado] || 'outline'}>
-                {r.estado}
-              </Badge>
+              <div className="flex items-center gap-3">
+                <RecordatorioAcciones id={r.id} estado={r.estado} />
+                <Badge variant={ESTADO_VARIANT[r.estado] || 'outline'}>
+                  {r.estado}
+                </Badge>
+              </div>
             </div>
           ))}
         </CardContent>

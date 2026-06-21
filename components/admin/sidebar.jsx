@@ -11,6 +11,7 @@ import {
   MessageSquare,
   UserPlus,
   CreditCard,
+  UserCog,
   LogOut,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -24,6 +25,7 @@ const NAV = [
   { href: '/admin/mensajes', label: 'Mensajes', icon: MessageSquare },
   { href: '/admin/leads', label: 'Leads', icon: UserPlus },
   { href: '/admin/compras', label: 'Compras', icon: CreditCard },
+  { href: '/admin/admins', label: 'Administradores', icon: UserCog },
 ];
 
 export function Sidebar({ user }) {

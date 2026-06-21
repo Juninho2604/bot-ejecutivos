@@ -9,6 +9,7 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
+import { LeadAcciones } from '@/components/admin/lead-acciones';
 import { fmtFecha } from '@/lib/format';
 
 export const dynamic = 'force-dynamic';
@@ -66,12 +67,13 @@ export default async function LeadsPage() {
                   <TableHead>Origen</TableHead>
                   <TableHead>Estado</TableHead>
                   <TableHead>Fecha</TableHead>
+                  <TableHead>Acciones</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {leads.length === 0 && (
                   <TableRow>
-                    <TableCell colSpan={7} className="text-center text-muted-foreground">
+                    <TableCell colSpan={8} className="text-center text-muted-foreground">
                       Sin leads todavía.
                     </TableCell>
                   </TableRow>
@@ -90,6 +92,9 @@ export default async function LeadsPage() {
                     </TableCell>
                     <TableCell className="text-muted-foreground">
                       {fmtFecha(l.creado_en)}
+                    </TableCell>
+                    <TableCell>
+                      <LeadAcciones id={l.id} estado={l.estado} />
                     </TableCell>
                   </TableRow>
                 ))}

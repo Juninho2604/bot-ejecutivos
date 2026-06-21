@@ -10,6 +10,7 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
+import { RecordatorioAcciones } from '@/components/admin/recordatorio-acciones';
 import { fmtFecha } from '@/lib/format';
 
 export const dynamic = 'force-dynamic';
@@ -67,12 +68,13 @@ export default async function RecordatoriosPage() {
                   <TableHead>Fecha objetivo</TableHead>
                   <TableHead>Recurrencia</TableHead>
                   <TableHead>Estado</TableHead>
+                  <TableHead>Acciones</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {data.length === 0 && (
                   <TableRow>
-                    <TableCell colSpan={5} className="text-center text-muted-foreground">
+                    <TableCell colSpan={6} className="text-center text-muted-foreground">
                       Sin recordatorios.
                     </TableCell>
                   </TableRow>
@@ -96,6 +98,9 @@ export default async function RecordatoriosPage() {
                       <Badge variant={ESTADO_VARIANT[r.estado] || 'outline'}>
                         {r.estado}
                       </Badge>
+                    </TableCell>
+                    <TableCell>
+                      <RecordatorioAcciones id={r.id} estado={r.estado} />
                     </TableCell>
                   </TableRow>
                 ))}
