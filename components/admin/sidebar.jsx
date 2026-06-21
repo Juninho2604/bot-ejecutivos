@@ -10,6 +10,7 @@ import {
   ListChecks,
   MessageSquare,
   UserPlus,
+  CreditCard,
   LogOut,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -22,6 +23,7 @@ const NAV = [
   { href: '/admin/listas', label: 'Listas', icon: ListChecks },
   { href: '/admin/mensajes', label: 'Mensajes', icon: MessageSquare },
   { href: '/admin/leads', label: 'Leads', icon: UserPlus },
+  { href: '/admin/compras', label: 'Compras', icon: CreditCard },
 ];
 
 export function Sidebar({ user }) {

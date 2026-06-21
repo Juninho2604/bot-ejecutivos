@@ -83,6 +83,27 @@ CREATE TABLE IF NOT EXISTS leads (
 
 CREATE INDEX IF NOT EXISTS idx_leads_estado ON leads (estado, creado_en DESC);
 
+-- Compras/órdenes generadas desde el checkout de la web pública (VenePagos).
+CREATE TABLE IF NOT EXISTS compras (
+  id                BIGSERIAL PRIMARY KEY,
+  referencia        TEXT NOT NULL UNIQUE,          -- referencia única nuestra
+  nombre            TEXT,
+  email             TEXT,
+  telefono          TEXT NOT NULL,                 -- WhatsApp del cliente
+  plan              TEXT NOT NULL,                 -- slug del plan
+  monto             NUMERIC(10,2) NOT NULL,
+  moneda            TEXT NOT NULL DEFAULT 'USD',
+  dias              INTEGER NOT NULL DEFAULT 30,   -- duración de la suscripción
+  estado            TEXT NOT NULL DEFAULT 'pendiente', -- pendiente | pagado | fallido
+  venepagos_link_id TEXT,
+  venepagos_txn_id  TEXT,
+  pagado_en         TIMESTAMPTZ,
+  creado_en         TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS idx_compras_estado ON compras (estado, creado_en DESC);
+CREATE INDEX IF NOT EXISTS idx_compras_txn ON compras (venepagos_txn_id);
+
 -- Vista: suscripciones próximas a vencer (en los próximos 7 días).
 CREATE OR REPLACE VIEW v_suscripciones_por_vencer AS
 SELECT

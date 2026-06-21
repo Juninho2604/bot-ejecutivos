@@ -15,13 +15,51 @@ lib/
   whatsapp.js      enviarMensaje, enviarPlantilla, descargarAudio (Graph v21.0)
   recordatorios.js procesarIntent(clienteId, resultado) -> acción + respuesta
 
-app/api/
-  whatsapp/webhook/route.js  GET (verificación Meta) + POST (mensajes entrantes)
-  cron/dispatch/route.js     POST protegido con CRON_SECRET (despacho)
+  venepagos.js     crearLinkPago() + verificarFirmaWebhook() (checkout)
+  planes.js        Catálogo de planes y precios
+  auth.js          NextAuth (credenciales contra tabla admins)
 
-db/schema.sql      Tablas (clientes, recordatorios, listas, mensajes) y vista
-                   v_suscripciones_por_vencer
+app/
+  page.js                      Landing pública (marketing + precios)
+  checkout/[plan]/             Checkout por plan (formulario)
+  pago/exito|cancelado/        Resultado del pago
+  login/                       Acceso al panel interno
+  admin/                       Intraweb de gestión (protegida)
+  api/whatsapp/webhook/        GET (verificación Meta) + POST (mensajes)
+  api/cron/dispatch/           POST protegido con CRON_SECRET (despacho)
+  api/checkout/                Crea la orden + link de pago VenePagos
+  api/webhooks/venepagos/      Confirma el pago y activa al cliente
+  api/auth/[...nextauth]/      NextAuth
+
+db/schema.sql      Tablas (clientes, recordatorios, listas, mensajes, admins,
+                   leads, compras) y vista v_suscripciones_por_vencer
 ```
+
+## Panel interno (intraweb)
+
+Protegido con NextAuth. Crea el primer admin con:
+
+```bash
+npm run seed:admin -- admin@empresa.com tu_clave "Tu Nombre"
+```
+
+Luego entra en `/login`. El panel (`/admin`) muestra dashboard, clientes,
+recordatorios, listas, mensajes, leads y compras.
+
+## Web pública y pagos (VenePagos)
+
+La landing (`/`) muestra los planes definidos en `lib/planes.js`. Al elegir un
+plan, el cliente completa sus datos en `/checkout/[plan]`; el endpoint
+`/api/checkout` crea la orden y un link de pago con VenePagos y redirige al
+cliente. Cuando el pago se confirma, VenePagos llama a
+`/api/webhooks/venepagos`, que marca la compra como pagada, activa/extiende la
+suscripción del cliente y envía un mensaje de bienvenida por WhatsApp.
+
+> ⚠️ El cuerpo exacto del endpoint de creación de links de VenePagos no está
+> 100% documentado públicamente; el mapeo de campos está centralizado en
+> `lib/venepagos.js` (función `crearLinkPago`) para ajustarlo fácilmente contra
+> la API real. Configura `VENEPAGOS_API_KEY`, `VENEPAGOS_MERCHANT_ID` y
+> `VENEPAGOS_WEBHOOK_SECRET` (ver `.env.example`).
 
 ## Puesta en marcha
 
