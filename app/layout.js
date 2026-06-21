@@ -1,3 +1,5 @@
+import './globals.css';
+
 export const metadata = {
   title: 'Bot Ejecutivos',
   description: 'Bot de recordatorios por WhatsApp para ejecutivos',

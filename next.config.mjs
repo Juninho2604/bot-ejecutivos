@@ -1,8 +1,10 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  // pg y form-data deben tratarse como paquetes externos en el server.
-  serverExternalPackages: ['pg'],
+  experimental: {
+    // pg debe tratarse como paquete externo en los server components.
+    serverComponentsExternalPackages: ['pg', 'bcryptjs'],
+  },
 };
 
 export default nextConfig;

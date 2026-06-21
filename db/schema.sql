@@ -55,6 +55,34 @@ CREATE TABLE IF NOT EXISTS mensajes (
 
 CREATE INDEX IF NOT EXISTS idx_mensajes_cliente ON mensajes (cliente_id, creado_en DESC);
 
+-- Administradores del panel interno (intraweb). Autenticación con NextAuth
+-- usando contraseñas hasheadas con bcrypt.
+CREATE TABLE IF NOT EXISTS admins (
+  id            BIGSERIAL PRIMARY KEY,
+  email         TEXT NOT NULL UNIQUE,
+  nombre        TEXT,
+  password_hash TEXT NOT NULL,
+  rol           TEXT NOT NULL DEFAULT 'admin',  -- admin | superadmin
+  activo        BOOLEAN NOT NULL DEFAULT TRUE,
+  ultimo_login  TIMESTAMPTZ,
+  creado_en     TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- Leads/prospectos captados desde la web pública (antes de convertirse en cliente).
+CREATE TABLE IF NOT EXISTS leads (
+  id         BIGSERIAL PRIMARY KEY,
+  nombre     TEXT,
+  email      TEXT,
+  telefono   TEXT,
+  plan       TEXT,
+  origen     TEXT DEFAULT 'web',            -- web | checkout | referido | ...
+  estado     TEXT NOT NULL DEFAULT 'nuevo', -- nuevo | contactado | convertido | descartado
+  notas      TEXT,
+  creado_en  TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS idx_leads_estado ON leads (estado, creado_en DESC);
+
 -- Vista: suscripciones próximas a vencer (en los próximos 7 días).
 CREATE OR REPLACE VIEW v_suscripciones_por_vencer AS
 SELECT
