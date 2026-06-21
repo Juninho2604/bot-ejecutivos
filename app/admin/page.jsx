@@ -112,7 +112,7 @@ export default async function DashboardPage() {
                   <Badge variant={m.direccion === 'entrante' ? 'secondary' : 'outline'}>
                     {m.direccion}
                   </Badge>
-                  {m.tipo === 'audio' && <Badge variant="warning">🎧 audio</Badge>}
+                  {m.tipo === 'audio' && <Badge variant="warning">audio</Badge>}
                 </div>
                 <p className="truncate text-sm text-muted-foreground">
                   {m.contenido || '—'}

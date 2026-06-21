@@ -133,7 +133,7 @@ export default async function ClienteDetallePage({ params }) {
                 <p className="text-sm font-medium">{r.tarea}</p>
                 <p className="text-xs text-muted-foreground">
                   {fmtFecha(r.fecha_objetivo)}
-                  {r.recurrencia ? ` · 🔁 ${r.recurrencia}` : ''}
+                  {r.recurrencia ? ` · ${r.recurrencia}` : ''}
                 </p>
               </div>
               <div className="flex items-center gap-3">
@@ -189,7 +189,7 @@ export default async function ClienteDetallePage({ params }) {
                   <Badge variant={m.direccion === 'entrante' ? 'secondary' : 'outline'}>
                     {m.direccion}
                   </Badge>
-                  {m.tipo === 'audio' && <Badge variant="warning">🎧</Badge>}
+                  {m.tipo === 'audio' && <Badge variant="warning">audio</Badge>}
                 </div>
                 <p className="mt-1 text-sm">{m.contenido || '—'}</p>
               </div>

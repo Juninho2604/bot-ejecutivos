@@ -33,8 +33,7 @@ export function Sidebar({ user }) {
 
   return (
     <aside className="flex h-screen w-64 flex-col border-r bg-card">
-      <div className="flex h-16 items-center gap-2 border-b px-6">
-        <span className="text-xl">🤖</span>
+      <div className="flex h-16 items-center border-b px-6">
         <span className="font-semibold">Bot Ejecutivos</span>
       </div>
 

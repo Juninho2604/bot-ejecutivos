@@ -87,7 +87,7 @@ export default async function MensajesPage() {
                         </Badge>
                       </TableCell>
                       <TableCell>
-                        {m.tipo === 'audio' ? '🎧 audio' : m.tipo}
+                        {m.tipo === 'audio' ? 'audio' : m.tipo}
                       </TableCell>
                       <TableCell className="max-w-xs truncate">
                         {m.contenido || '—'}
