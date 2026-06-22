@@ -12,7 +12,9 @@ ENV NEXT_TELEMETRY_DISABLED=1
 COPY package.json package-lock.json ./
 RUN npm ci --include=dev
 COPY . .
-RUN npm run build
+# Invoca Next directamente por su ruta (evita el fallo "next: not found" si
+# npm no crea los enlaces en node_modules/.bin en algunos entornos Alpine).
+RUN node node_modules/next/dist/bin/next build
 
 # 2) Runtime: imagen mínima con el build standalone
 FROM node:20-alpine AS runner
