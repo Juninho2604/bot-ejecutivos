@@ -68,18 +68,23 @@ export function CheckoutForm({ plan }) {
           onChange={update('telefono')}
           required
         />
-        <p className="text-xs text-muted-foreground">
+        <p className="text-xs text-white/60">
           Aquí recibirás tus recordatorios. Ej: 584121234567
         </p>
       </div>
 
       {error && <p className="text-sm font-medium text-destructive">{error}</p>}
 
-      <Button type="submit" className="w-full" size="lg" disabled={loading}>
+      <Button
+        type="submit"
+        className="w-full rounded-full bg-yellow-400 font-semibold text-slate-900 hover:bg-yellow-300"
+        size="lg"
+        disabled={loading}
+      >
         {loading && <Loader2 className="animate-spin" />}
         Ir a pagar
       </Button>
-      <p className="text-center text-xs text-muted-foreground">
+      <p className="text-center text-xs text-white/60">
         Pago seguro procesado por VenePagos.
       </p>
     </form>

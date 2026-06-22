@@ -51,7 +51,7 @@ function LoginForm() {
       <Card className="w-full max-w-sm">
         <CardHeader className="space-y-1 text-center">
           <CardTitle className="text-2xl">Panel de gestión</CardTitle>
-          <CardDescription>Bot Ejecutivos · acceso interno</CardDescription>
+          <CardDescription>Fabbio Bot · acceso interno</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={onSubmit} className="space-y-4">

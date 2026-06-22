@@ -57,3 +57,52 @@
     @apply bg-background text-foreground;
   }
 }
+
+@layer components {
+  /* Vidrio esmerilado (glassmorphism) para la web pública */
+  .glass {
+    @apply border border-white/20 bg-white/10 backdrop-blur-md;
+  }
+  .glass-strong {
+    @apply border border-white/25 bg-white/15 backdrop-blur-xl;
+  }
+}
+
+/* ----------------------- Animaciones del robot Fabbio ---------------------- */
+@keyframes fabbio-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+}
+@keyframes fabbio-blink {
+  0%, 92%, 100% { transform: scaleY(1); }
+  96% { transform: scaleY(0.1); }
+}
+@keyframes fabbio-wave {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(22deg); }
+}
+@keyframes fabbio-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.35; }
+}
+.animate-fabbio-float {
+  animation: fabbio-float 4s ease-in-out infinite;
+}
+.animate-fabbio-blink {
+  animation: fabbio-blink 4.5s ease-in-out infinite;
+}
+.animate-fabbio-wave {
+  animation: fabbio-wave 2.4s ease-in-out infinite;
+}
+.animate-fabbio-pulse {
+  animation: fabbio-pulse 2s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-fabbio-float,
+  .animate-fabbio-blink,
+  .animate-fabbio-wave,
+  .animate-fabbio-pulse {
+    animation: none;
+  }
+}

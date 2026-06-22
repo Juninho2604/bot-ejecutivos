@@ -1,35 +1,32 @@
 import Link from 'next/link';
 import { CheckCircle2 } from 'lucide-react';
-import { SiteNav } from '@/components/public/site-nav';
-import { SiteFooter } from '@/components/public/site-footer';
+import { PublicShell } from '@/components/public/public-shell';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
 
-export const metadata = { title: 'Pago confirmado · Bot Ejecutivos' };
+export const metadata = { title: 'Pago confirmado · Fabbio Bot' };
 
 export default function PagoExitoPage() {
   return (
-    <div className="flex min-h-screen flex-col">
-      <SiteNav />
-      <main className="container mx-auto flex max-w-2xl flex-1 items-center justify-center px-4 py-16">
-        <Card className="w-full text-center">
-          <CardContent className="space-y-4 p-10">
-            <CheckCircle2 className="mx-auto size-16 text-primary" />
-            <h1 className="text-2xl font-bold">¡Gracias por tu compra!</h1>
-            <p className="text-muted-foreground">
-              Estamos confirmando tu pago. En cuanto se acredite, recibirás un
-              mensaje de bienvenida en tu WhatsApp y tu bot quedará activo.
-            </p>
-            <p className="text-sm text-muted-foreground">
-              Si ya tenías el bot, tu suscripción se extenderá automáticamente.
-            </p>
-            <Button asChild>
-              <Link href="/">Volver al inicio</Link>
-            </Button>
-          </CardContent>
-        </Card>
-      </main>
-      <SiteFooter />
-    </div>
+    <PublicShell>
+      <div className="container mx-auto flex max-w-2xl items-center justify-center px-4 py-20">
+        <div className="glass-strong w-full rounded-3xl p-10 text-center text-white">
+          <CheckCircle2 className="mx-auto size-16 text-yellow-300" />
+          <h1 className="mt-4 text-2xl font-bold">Gracias por tu compra</h1>
+          <p className="mt-3 text-white/75">
+            Estamos confirmando tu pago. En cuanto se acredite, recibirás un mensaje de
+            bienvenida en tu WhatsApp y Fabbio quedará activo.
+          </p>
+          <p className="mt-2 text-sm text-white/60">
+            Si ya tenías el bot, tu suscripción se extenderá automáticamente.
+          </p>
+          <Button
+            asChild
+            className="mt-6 rounded-full bg-yellow-400 font-semibold text-slate-900 hover:bg-yellow-300"
+          >
+            <Link href="/">Volver al inicio</Link>
+          </Button>
+        </div>
+      </div>
+    </PublicShell>
   );
 }

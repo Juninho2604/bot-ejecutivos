@@ -16,6 +16,7 @@ import {
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
+import { FabbioRobot } from '@/components/public/fabbio-robot';
 
 const NAV = [
   { href: '/admin', label: 'Dashboard', icon: LayoutDashboard, exact: true },
@@ -33,8 +34,9 @@ export function Sidebar({ user }) {
 
   return (
     <aside className="flex h-screen w-64 flex-col border-r bg-card">
-      <div className="flex h-16 items-center border-b px-6">
-        <span className="font-semibold">Bot Ejecutivos</span>
+      <div className="flex h-16 items-center gap-2 border-b px-6">
+        <FabbioRobot size={26} animated={false} />
+        <span className="font-semibold">Fabbio Bot</span>
       </div>
 
       <nav className="flex-1 space-y-1 p-3">

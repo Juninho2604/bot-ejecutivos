@@ -1,8 +1,9 @@
 import './globals.css';
 
 export const metadata = {
-  title: 'Bot Ejecutivos',
-  description: 'Bot de recordatorios por WhatsApp para ejecutivos',
+  title: 'Fabbio Bot · Tu asistente ejecutivo en WhatsApp',
+  description:
+    'Fabbio Bot gestiona tus recordatorios, listas y pendientes directo en WhatsApp. Pensado para ejecutivos y gerentes.',
 };
 
 export default function RootLayout({ children }) {
