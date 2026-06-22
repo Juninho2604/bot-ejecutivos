@@ -1,0 +1,18 @@
+# ===========================================================================
+# Fabbio Bot - despliegue en VPS con Docker Compose
+# La base de datos PostgreSQL es la tuya (externa); aquí solo corre la app.
+# Las variables se leen del archivo .env (copia .env.example y complétalo).
+# ===========================================================================
+services:
+  app:
+    build: .
+    image: fabbio-bot:latest
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    # Si tu PostgreSQL corre en el mismo host (fuera de Docker), puedes usar
+    # host.docker.internal en DATABASE_URL gracias a este mapeo:
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
