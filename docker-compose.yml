@@ -8,10 +8,10 @@ services:
     build: .
     image: fabbio-bot:latest
     restart: unless-stopped
-    # Puerto del host configurable con APP_PORT en .env (por defecto 3000).
-    # Cambialo si 3000 ya está ocupado por otro proyecto.
+    # Se publica SOLO en loopback (127.0.0.1) para que únicamente Nginx pueda
+    # acceder; el puerto del host es APP_PORT (.env). En tu VPS: APP_PORT=3002.
     ports:
-      - "${APP_PORT:-3000}:3000"
+      - "127.0.0.1:${APP_PORT:-3000}:3000"
     env_file:
       - .env
     # Si tu PostgreSQL corre en el mismo host (fuera de Docker), puedes usar
