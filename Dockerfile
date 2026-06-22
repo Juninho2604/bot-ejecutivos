@@ -1,30 +1,28 @@
 # ===========================================================================
 # Fabbio Bot - Imagen de producción (Next.js standalone)
+# Base: node:20-slim (Debian/glibc). Evita los problemas de npm/SWC en
+# Alpine/musl (npm no instalaba bien next ni los binarios SWC).
 # ===========================================================================
 
-# 1) Build: instala TODAS las dependencias y compila en la misma etapa
-#    (evita problemas de copia de node_modules entre etapas y fuerza
-#     las devDependencies aunque exista NODE_ENV=production en el entorno).
-FROM node:20-alpine AS builder
+# 1) Build
+FROM node:20-slim AS builder
 WORKDIR /app
 ENV NODE_ENV=development
 ENV NEXT_TELEMETRY_DISABLED=1
 COPY package.json package-lock.json ./
 RUN npm ci --include=dev
 COPY . .
-# Invoca Next directamente por su ruta (evita el fallo "next: not found" si
-# npm no crea los enlaces en node_modules/.bin en algunos entornos Alpine).
-RUN node node_modules/next/dist/bin/next build
+RUN npm run build
 
-# 2) Runtime: imagen mínima con el build standalone
-FROM node:20-alpine AS runner
+# 2) Runtime (imagen mínima con el build standalone)
+FROM node:20-slim AS runner
 WORKDIR /app
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV PORT=3000
 ENV HOSTNAME=0.0.0.0
 
-RUN addgroup -g 1001 -S nodejs && adduser -S nextjs -u 1001
+RUN groupadd -g 1001 nodejs && useradd -u 1001 -g nodejs -m nextjs
 
 COPY --from=builder /app/public ./public
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
