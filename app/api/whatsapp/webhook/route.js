@@ -93,7 +93,7 @@ async function procesarWebhook(body) {
       if (!texto) {
         await enviarMensaje(
           tel,
-          'No pude entender el audio 🎧. ¿Me lo puedes escribir o reenviar?'
+          'No pude procesar la nota de voz. ¿Podría escribirlo o enviarlo nuevamente?'
         );
         await guardarMensaje(clienteId, 'audio', '', null);
         return;
@@ -102,13 +102,13 @@ async function procesarWebhook(body) {
       // Otros tipos (imagen, ubicación, etc.) no soportados aún.
       await enviarMensaje(
         tel,
-        'Por ahora solo entiendo texto y notas de voz 🙂. ¿Me lo escribes?'
+        'Por ahora solo proceso texto y notas de voz. ¿Podría escribirlo?'
       );
       return;
     }
   } catch (err) {
     console.error('[webhook] error obteniendo texto:', err.message);
-    await enviarMensaje(tel, 'Tuve un problema procesando tu mensaje 😓. Inténtalo de nuevo.');
+    await enviarMensaje(tel, 'Tuve un inconveniente procesando su mensaje. Inténtelo de nuevo.');
     return;
   }
 
@@ -124,7 +124,7 @@ async function procesarWebhook(body) {
     respuesta = await procesarIntent(clienteId, resultado);
   } catch (err) {
     console.error('[webhook] error procesando intent:', err.message);
-    respuesta = 'Uy, algo salió mal de mi lado 😓. ¿Lo intentamos otra vez?';
+    respuesta = 'Ocurrió un inconveniente de mi parte. ¿Lo intentamos nuevamente?';
   }
 
   // 6) Responder por WhatsApp.

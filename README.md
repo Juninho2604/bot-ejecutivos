@@ -55,7 +55,7 @@ cliente. Cuando el pago se confirma, VenePagos llama a
 `/api/webhooks/venepagos`, que marca la compra como pagada, activa/extiende la
 suscripción del cliente y envía un mensaje de bienvenida por WhatsApp.
 
-> ⚠️ El cuerpo exacto del endpoint de creación de links de VenePagos no está
+> NOTA: El cuerpo exacto del endpoint de creación de links de VenePagos no está
 > 100% documentado públicamente; el mapeo de campos está centralizado en
 > `lib/venepagos.js` (función `crearLinkPago`) para ajustarlo fácilmente contra
 > la API real. Configura `VENEPAGOS_API_KEY`, `VENEPAGOS_MERCHANT_ID` y

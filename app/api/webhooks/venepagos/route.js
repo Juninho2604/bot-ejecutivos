@@ -122,8 +122,8 @@ async function procesarPagoCompletado(data) {
   // 4) Mensaje de bienvenida por WhatsApp (no bloqueante).
   enviarMensaje(
     compra.telefono,
-    `¡Pago confirmado! 🎉 Tu plan *${compra.plan}* está activo. ` +
-      'Ya puedes pedirme recordatorios por aquí. Por ejemplo: ' +
+    `Pago confirmado. Su plan *${compra.plan}* está activo. ` +
+      'Ya puede solicitar recordatorios por este medio. Por ejemplo: ' +
       '"Recuérdame llamar al banco mañana a las 9".'
   ).catch((e) => console.error('[webhook venepagos] bienvenida:', e.message));
 }

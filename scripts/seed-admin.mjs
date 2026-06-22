@@ -46,11 +46,11 @@ async function main() {
      RETURNING id, email`,
     [email, nombre, hash]
   );
-  console.log(`✅ Admin listo: ${rows[0].email} (id ${rows[0].id})`);
+  console.log(`Admin listo: ${rows[0].email} (id ${rows[0].id})`);
   await pool.end();
 }
 
 main().catch((err) => {
-  console.error('❌ Error:', err.message);
+  console.error('Error:', err.message);
   process.exit(1);
 });
