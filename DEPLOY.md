@@ -37,24 +37,32 @@ Claves importantes:
 - `NEXTAUTH_SECRET` — genera uno con `openssl rand -base64 32`.
 - `WHATSAPP_*`, `OPENROUTER_API_KEY`, `GROQ_API_KEY`, `VENEPAGOS_*`, `CRON_SECRET`.
 
-## 3. Cargar el esquema en tu PostgreSQL
+## 3. Esquema de base de datos
 
-```bash
-psql "$DATABASE_URL" -f db/schema.sql
-```
+Con el `docker-compose` incluido, el **Postgres es dedicado** (contenedor
+`db`) y el esquema (`db/schema.sql`) se **carga automáticamente** la primera
+vez que arranca. No tienes que hacer nada manual.
+
+> Tu VPS ya tiene varios servicios; este Postgres queda aislado en su propio
+> contenedor y volumen (`fabbio-db`), sin tocar tu Postgres del host.
 
 ---
 
 ## 4A. Despliegue con Docker (recomendado)
 
+En tu VPS (Contabo) el puerto 3000/3001 están ocupados; usa el **3002**:
+
 ```bash
+# en .env:
+#   APP_PORT=3002
+#   POSTGRES_PASSWORD=una_clave_fuerte
+#   DATABASE_URL=postgresql://fabbio:una_clave_fuerte@db:5432/fabbio?sslmode=disable
+#   NEXTAUTH_URL / APP_URL = https://fabbio.TU-DOMINIO
+
 docker compose up -d --build
 ```
 
-La app quedará escuchando en `http://127.0.0.1:3000`.
-
-> Si tu Postgres corre en el mismo host (fuera de Docker), en `.env` usa
-> `DATABASE_URL=postgresql://usuario:clave@host.docker.internal:5432/fabbio?sslmode=disable`
+La app queda en `http://127.0.0.1:3002` (solo accesible vía Nginx).
 
 Crear el primer administrador (dentro del contenedor):
 
