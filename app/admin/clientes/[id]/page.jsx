@@ -13,7 +13,15 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { RecordatorioAcciones } from '@/components/admin/recordatorio-acciones';
 import { extenderSuscripcion } from '@/app/admin/actions';
+import { estadoAcceso } from '@/lib/entitlements';
 import { fmtFecha, fmtSoloFecha } from '@/lib/format';
+
+const ACCESO_VARIANT = {
+  pago: 'success',
+  trial: 'warning',
+  expirado: 'destructive',
+  nuevo: 'secondary',
+};
 
 export const dynamic = 'force-dynamic';
 
@@ -78,6 +86,18 @@ export default async function ClienteDetallePage({ params }) {
           <p className="text-muted-foreground">{cliente.telefono}</p>
         </div>
         <div className="flex items-center gap-2">
+          {(() => {
+            const acceso = estadoAcceso(cliente);
+            return (
+              <Badge variant={ACCESO_VARIANT[acceso.tipo] || 'outline'}>
+                {acceso.activo
+                  ? acceso.tipo === 'trial'
+                    ? `Prueba · ${acceso.diasRestantes}d`
+                    : `Activo · ${acceso.diasRestantes}d`
+                  : 'Sin acceso'}
+              </Badge>
+            );
+          })()}
           <Badge variant="outline">{cliente.plan || 'free'}</Badge>
           {cliente.suscripcion_vence && (
             <Badge variant="secondary">

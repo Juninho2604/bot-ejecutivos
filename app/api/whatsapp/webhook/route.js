@@ -71,11 +71,12 @@ async function procesarWebhook(body) {
   if (!tel) return;
 
   // 1) Upsert del cliente por teléfono.
-  const clienteId = await upsertCliente(tel, nombrePerfil);
-  if (!clienteId) {
-    console.error('[webhook] no se pudo obtener clienteId');
+  const cliente = await upsertCliente(tel, nombrePerfil);
+  if (!cliente) {
+    console.error('[webhook] no se pudo obtener el cliente');
     return;
   }
+  const clienteId = cliente.id;
 
   // 2) Extraer el texto (directo o vía transcripción de audio).
   let texto = '';
@@ -121,7 +122,7 @@ async function procesarWebhook(body) {
   // 5) Procesar la intención y obtener la respuesta.
   let respuesta;
   try {
-    respuesta = await procesarIntent(clienteId, resultado);
+    respuesta = await procesarIntent(cliente, resultado);
   } catch (err) {
     console.error('[webhook] error procesando intent:', err.message);
     respuesta = 'Ocurrió un inconveniente de mi parte. ¿Lo intentamos nuevamente?';
@@ -134,10 +135,10 @@ async function procesarWebhook(body) {
 }
 
 /**
- * Inserta el cliente si no existe (por teléfono) y devuelve su id.
+ * Inserta el cliente si no existe (por teléfono) y devuelve su fila.
  * @param {string} tel
  * @param {string|null} nombre
- * @returns {Promise<number|null>}
+ * @returns {Promise<object|null>} fila con id, plan, suscripcion_vence, creado_en
  */
 async function upsertCliente(tel, nombre) {
   try {
@@ -148,10 +149,10 @@ async function upsertCliente(tel, nombre) {
        DO UPDATE SET
          ultimo_contacto = NOW(),
          nombre = COALESCE(clientes.nombre, EXCLUDED.nombre)
-       RETURNING id`,
+       RETURNING id, plan, suscripcion_vence, creado_en`,
       [tel, nombre]
     );
-    return rows[0]?.id ?? null;
+    return rows[0] ?? null;
   } catch (err) {
     console.error('[webhook] upsertCliente error:', err.message);
     return null;
