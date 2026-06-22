@@ -1,0 +1,39 @@
+# ===========================================================================
+# Fabbio Bot - despliegue en VPS con Docker Compose
+# App Next.js + PostgreSQL dedicado (aislado, como tus otros proyectos).
+# Variables en .env (copia .env.example y complétalo).
+# ===========================================================================
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: fabbio
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-fabbio}
+      POSTGRES_DB: fabbio
+    volumes:
+      - fabbio-db:/var/lib/postgresql/data
+      # Carga el esquema automáticamente la PRIMERA vez que se crea el volumen:
+      - ./db/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U fabbio -d fabbio"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  app:
+    build: .
+    image: fabbio-bot:latest
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    env_file:
+      - .env
+    # Se publica SOLO en loopback (127.0.0.1); únicamente Nginx accede.
+    # El puerto del host es APP_PORT (.env). En tu VPS: APP_PORT=3002.
+    ports:
+      - "127.0.0.1:${APP_PORT:-3000}:3000"
+
+volumes:
+  fabbio-db:
