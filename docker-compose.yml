@@ -8,8 +8,10 @@ services:
     build: .
     image: fabbio-bot:latest
     restart: unless-stopped
+    # Puerto del host configurable con APP_PORT en .env (por defecto 3000).
+    # Cambialo si 3000 ya está ocupado por otro proyecto.
     ports:
-      - "3000:3000"
+      - "${APP_PORT:-3000}:3000"
     env_file:
       - .env
     # Si tu PostgreSQL corre en el mismo host (fuera de Docker), puedes usar
